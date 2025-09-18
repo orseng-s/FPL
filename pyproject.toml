@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fpl-notifier"
+version = "0.1.0"
+description = "Send push notifications before Fantasy Premier League deadlines"
+readme = "README.md"
+authors = [{name = "FPL Tools"}]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+fpl-notifier = "fpl_notifier.__main__:main"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["src"]
