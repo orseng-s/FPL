@@ -100,3 +100,20 @@ The code is structured around three main modules:
 You can implement alternative notification channels by creating a class with a
 `send(gameweek, lead_time)` method and passing it to
 `DeadlineNotificationService`.
+
+## Android companion app
+
+The repository also includes a Kotlin-based Android application under
+[`android-app/`](android-app/README.md). The app mirrors the CLI flags for lead
+time, polling interval, and timezone configuration, stores preferences via Jetpack
+DataStore, and schedules background reminders using WorkManager. Reminders are
+delivered as native notifications that match the payload produced by the Python
+notifier.
+
+To enable reminders on Android:
+
+1. Open the app and adjust the lead time, poll interval, or timezone as needed.
+2. Toggle **Enable reminders**. Android 13+ will prompt for the notification
+   permission.
+3. Keep the app installed; WorkManager will continue polling the public FPL API
+   and trigger reminders at the configured lead time.

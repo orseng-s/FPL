@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FPL Notifier</string>
+    <string name="lead_hours_label">Lead time (hours)</string>
+    <string name="poll_minutes_label">Polling interval (minutes)</string>
+    <string name="timezone_label">Timezone</string>
+    <string name="enable_reminders">Enable reminders</string>
+    <string name="status_heading">Status</string>
+    <string name="last_notification_none">No reminders sent yet.</string>
+    <string name="save_changes">Settings are saved automatically.</string>
+    <string name="notifications_disabled">Background reminders are disabled.</string>
+    <string name="notifications_enabled">Background reminders are enabled.</string>
+</resources>
