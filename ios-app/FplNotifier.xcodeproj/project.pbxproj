@@ -1,0 +1,375 @@
+// !$*UTF8*$!
+{
+archiveVersion = 1;
+classes = {
+};
+objectVersion = 56;
+objects = {
+
+/* Begin PBXBuildFile section */
+3E1D4A5A2B0E45C8008B9A22 /* FplNotifierApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A4F2B0E45C8008B9A22; };
+3E1D4A5B2B0E45C8008B9A22 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A502B0E45C8008B9A22; };
+3E1D4A5C2B0E45C8008B9A22 /* FplApiRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A512B0E45C8008B9A22; };
+3E1D4A5D2B0E45C8008B9A22 /* GameweekDeadline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A522B0E45C8008B9A22; };
+3E1D4A5E2B0E45C8008B9A22 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A532B0E45C8008B9A22; };
+3E1D4A5F2B0E45C8008B9A22 /* ReminderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A542B0E45C8008B9A22; };
+3E1D4A602B0E45C8008B9A22 /* DeadlineScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A552B0E45C8008B9A22; };
+3E1D4A612B0E45C8008B9A22 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A562B0E45C8008B9A22; };
+3E1D4A622B0E45C8008B9A22 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A572B0E45C8008B9A22; };
+3E1D4A632B0E45C8008B9A22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E1D4A582B0E45C8008B9A22; };
+3E1D4A6A2B0E45C8008B9A22 /* GameweekDeadlineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D4A652B0E45C8008B9A22; };
+3E1D4A6B2B0E45C8008B9A22 /* bootstrap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E1D4A662B0E45C8008B9A22; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+3E1D4A3A2B0E45B1008B9A22 /* FplNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FplNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
+3E1D4A3B2B0E45B1008B9A22 /* FplNotifierTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FplNotifierTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+3E1D4A4F2B0E45C8008B9A22 /* FplNotifierApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FplNotifierApp.swift; sourceTree = "<group>"; };
+3E1D4A502B0E45C8008B9A22 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+3E1D4A512B0E45C8008B9A22 /* FplApiRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FplApiRepository.swift; sourceTree = "<group>"; };
+3E1D4A522B0E45C8008B9A22 /* GameweekDeadline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameweekDeadline.swift; sourceTree = "<group>"; };
+3E1D4A532B0E45C8008B9A22 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+3E1D4A542B0E45C8008B9A22 /* ReminderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderStore.swift; sourceTree = "<group>"; };
+3E1D4A552B0E45C8008B9A22 /* DeadlineScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineScheduler.swift; sourceTree = "<group>"; };
+3E1D4A562B0E45C8008B9A22 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
+3E1D4A572B0E45C8008B9A22 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+3E1D4A582B0E45C8008B9A22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+3E1D4A592B0E45C8008B9A22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+3E1D4A652B0E45C8008B9A22 /* GameweekDeadlineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameweekDeadlineTests.swift; sourceTree = "<group>"; };
+3E1D4A662B0E45C8008B9A22 /* bootstrap.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bootstrap.json; sourceTree = "<group>"; };
+3E1D4A672B0E45C8008B9A22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+3E1D4A342B0E45B1008B9A22 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
+);
+runOnlyForDeploymentPostprocessing = 0; };
+3E1D4A3D2B0E45B1008B9A22 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
+);
+runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+3E1D4A312B0E45A0008B9A22 = {isa = PBXGroup; children = (
+3E1D4A4B2B0E45C8008B9A22 /* FplNotifier */, 
+3E1D4A642B0E45C8008B9A22 /* Tests */, 
+3E1D4A3A2B0E45B1008B9A22 /* Products */,
+); sourceTree = "<group>"; };
+3E1D4A3A2B0E45B1008B9A22 /* Products */ = {isa = PBXGroup; children = (
+3E1D4A3A2B0E45B1008B9A22 /* FplNotifier.app */,
+3E1D4A3B2B0E45B1008B9A22 /* FplNotifierTests.xctest */,
+); name = Products; sourceTree = "<group>"; };
+3E1D4A4B2B0E45C8008B9A22 /* FplNotifier */ = {isa = PBXGroup; children = (
+3E1D4A4C2B0E45C8008B9A22 /* Views */, 
+3E1D4A4D2B0E45C8008B9A22 /* ViewModels */, 
+3E1D4A4E2B0E45C8008B9A22 /* Data */, 
+3E1D4A5A2B0E45C8008B9A22 /* Scheduling */, 
+3E1D4A582B0E45C8008B9A22 /* Assets.xcassets */, 
+3E1D4A592B0E45C8008B9A22 /* Info.plist */,
+); path = FplNotifier; sourceTree = "<group>"; };
+3E1D4A4C2B0E45C8008B9A22 /* Views */ = {isa = PBXGroup; children = (
+3E1D4A502B0E45C8008B9A22 /* ContentView.swift */, 
+3E1D4A4F2B0E45C8008B9A22 /* FplNotifierApp.swift */,
+); path = Views; sourceTree = "<group>"; };
+3E1D4A4D2B0E45C8008B9A22 /* ViewModels */ = {isa = PBXGroup; children = (
+3E1D4A572B0E45C8008B9A22 /* MainViewModel.swift */,
+); path = ViewModels; sourceTree = "<group>"; };
+3E1D4A4E2B0E45C8008B9A22 /* Data */ = {isa = PBXGroup; children = (
+3E1D4A512B0E45C8008B9A22 /* FplApiRepository.swift */, 
+3E1D4A522B0E45C8008B9A22 /* GameweekDeadline.swift */, 
+3E1D4A532B0E45C8008B9A22 /* SettingsStore.swift */, 
+3E1D4A542B0E45C8008B9A22 /* ReminderStore.swift */,
+); path = Data; sourceTree = "<group>"; };
+3E1D4A5A2B0E45C8008B9A22 /* Scheduling */ = {isa = PBXGroup; children = (
+3E1D4A552B0E45C8008B9A22 /* DeadlineScheduler.swift */, 
+3E1D4A562B0E45C8008B9A22 /* NotificationHelper.swift */,
+); path = Scheduling; sourceTree = "<group>"; };
+3E1D4A642B0E45C8008B9A22 /* Tests */ = {isa = PBXGroup; children = (
+3E1D4A652B0E45C8008B9A22 /* GameweekDeadlineTests.swift */, 
+3E1D4A682B0E45C8008B9A22 /* Fixtures */, 
+3E1D4A672B0E45C8008B9A22 /* Info.plist */,
+); path = Tests/FplNotifierTests; sourceTree = "<group>"; };
+3E1D4A682B0E45C8008B9A22 /* Fixtures */ = {isa = PBXGroup; children = (
+3E1D4A662B0E45C8008B9A22 /* bootstrap.json */,
+); path = Fixtures; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+3E1D4A332B0E45B1008B9A22 /* FplNotifier */ = {isa = PBXNativeTarget; buildConfigurationList = 3E1D4A472B0E45B1008B9A22 /* Build configuration list for PBXNativeTarget "FplNotifier" */; buildPhases = (
+3E1D4A322B0E45B1008B9A22 /* Sources */, 
+3E1D4A342B0E45B1008B9A22 /* Frameworks */, 
+3E1D4A352B0E45B1008B9A22 /* Resources */,
+); buildRules = (
+);
+dependencies = (
+);
+name = FplNotifier;
+productName = FplNotifier;
+productReference = 3E1D4A3A2B0E45B1008B9A22 /* FplNotifier.app */;
+productType = "com.apple.product-type.application";
+};
+3E1D4A3C2B0E45B1008B9A22 /* FplNotifierTests */ = {isa = PBXNativeTarget; buildConfigurationList = 3E1D4A482B0E45B1008B9A22 /* Build configuration list for PBXNativeTarget "FplNotifierTests" */; buildPhases = (
+3E1D4A3F2B0E45B1008B9A22 /* Sources */, 
+3E1D4A3D2B0E45B1008B9A22 /* Frameworks */, 
+3E1D4A3E2B0E45B1008B9A22 /* Resources */,
+);
+dependencies = (
+3E1D4A402B0E45B1008B9A22 /* PBXTargetDependency */,
+);
+name = FplNotifierTests;
+productName = FplNotifierTests;
+productReference = 3E1D4A3B2B0E45B1008B9A22 /* FplNotifierTests.xctest */;
+productType = "com.apple.product-type.bundle.unit-test";
+};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+3E1D4A302B0E45A0008B9A22 /* Project object */ = {isa = PBXProject; attributes = {
+LastSwiftUpdateCheck = 1500;
+LastUpgradeCheck = 1500;
+TargetAttributes = {
+3E1D4A332B0E45B1008B9A22 = {
+CreatedOnToolsVersion = 15.0;
+};
+3E1D4A3C2B0E45B1008B9A22 = {
+CreatedOnToolsVersion = 15.0;
+TestTargetID = 3E1D4A332B0E45B1008B9A22;
+};
+};
+};
+buildConfigurationList = 3E1D4A462B0E45B1008B9A22 /* Build configuration list for PBXProject "FplNotifier" */;
+compatibilityVersion = "Xcode 14.0";
+developmentRegion = en;
+hasScannedForEncodings = 0;
+mainGroup = 3E1D4A312B0E45A0008B9A22;
+productRefGroup = 3E1D4A3A2B0E45B1008B9A22 /* Products */;
+projectDirPath = "";
+projectRoot = "";
+targets = (
+3E1D4A332B0E45B1008B9A22 /* FplNotifier */,
+3E1D4A3C2B0E45B1008B9A22 /* FplNotifierTests */,
+);
+};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+3E1D4A352B0E45B1008B9A22 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
+3E1D4A632B0E45C8008B9A22 /* Assets.xcassets in Resources */,
+);
+runOnlyForDeploymentPostprocessing = 0; };
+3E1D4A3E2B0E45B1008B9A22 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
+3E1D4A6B2B0E45C8008B9A22 /* bootstrap.json in Resources */,
+);
+runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+3E1D4A322B0E45B1008B9A22 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+3E1D4A622B0E45C8008B9A22 /* MainViewModel.swift in Sources */,
+3E1D4A5F2B0E45C8008B9A22 /* ReminderStore.swift in Sources */,
+3E1D4A602B0E45C8008B9A22 /* DeadlineScheduler.swift in Sources */,
+3E1D4A612B0E45C8008B9A22 /* NotificationHelper.swift in Sources */,
+3E1D4A5C2B0E45C8008B9A22 /* FplApiRepository.swift in Sources */,
+3E1D4A5A2B0E45C8008B9A22 /* FplNotifierApp.swift in Sources */,
+3E1D4A5B2B0E45C8008B9A22 /* ContentView.swift in Sources */,
+3E1D4A5E2B0E45C8008B9A22 /* SettingsStore.swift in Sources */,
+3E1D4A5D2B0E45C8008B9A22 /* GameweekDeadline.swift in Sources */,
+);
+runOnlyForDeploymentPostprocessing = 0; };
+3E1D4A3F2B0E45B1008B9A22 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+3E1D4A6A2B0E45C8008B9A22 /* GameweekDeadlineTests.swift in Sources */,
+);
+runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+3E1D4A402B0E45B1008B9A22 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 3E1D4A332B0E45B1008B9A22 /* FplNotifier */; targetProxy = 3E1D4A412B0E45B1008B9A22 /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+3E1D4A412B0E45B1008B9A22 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 3E1D4A302B0E45A0008B9A22 /* Project object */; proxyType = 1; remoteGlobalIDString = 3E1D4A332B0E45B1008B9A22; remoteInfo = FplNotifier; };
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+3E1D4A422B0E45B1008B9A22 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+ALWAYS_SEARCH_USER_PATHS = NO;
+CLANG_ANALYZER_NONNULL = YES;
+CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+CLANG_ENABLE_MODULES = YES;
+CLANG_ENABLE_OBJC_ARC = YES;
+CLANG_ENABLE_OBJC_WEAK = YES;
+CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+CLANG_WARN_BOOL_CONVERSION = YES;
+CLANG_WARN_COMMA = YES;
+CLANG_WARN_CONSTANT_CONVERSION = YES;
+CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+CLANG_WARN_EMPTY_BODY = YES;
+CLANG_WARN_ENUM_CONVERSION = YES;
+CLANG_WARN_INFINITE_RECURSION = YES;
+CLANG_WARN_INT_CONVERSION = YES;
+CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+CLANG_WARN_STRICT_PROTOTYPES = YES;
+CLANG_WARN_SUSPICIOUS_MOVE = YES;
+CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+CODE_SIGN_STYLE = Automatic;
+COPY_PHASE_STRIP = NO;
+DEBUG_INFORMATION_FORMAT = dwarf;
+ENABLE_STRICT_OBJC_MSGSEND = YES;
+ENABLE_TESTABILITY = YES;
+GCC_C_LANGUAGE_STANDARD = gnu11;
+GCC_DYNAMIC_NO_PIC = NO;
+GCC_NO_COMMON_BLOCKS = YES;
+GCC_PREPROCESSOR_DEFINITIONS = (
+"DEBUG=1",
+"$(inherited)",
+);
+GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+GCC_WARN_UNDECLARED_SELECTOR = YES;
+GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+GCC_WARN_UNUSED_FUNCTION = YES;
+GCC_WARN_UNUSED_VARIABLE = YES;
+IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+ONLY_ACTIVE_ARCH = YES;
+SDKROOT = iphoneos;
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+TARGETED_DEVICE_FAMILY = "1";
+}; name = Debug; };
+3E1D4A432B0E45B1008B9A22 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+ALWAYS_SEARCH_USER_PATHS = NO;
+CLANG_ANALYZER_NONNULL = YES;
+CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+CLANG_ENABLE_MODULES = YES;
+CLANG_ENABLE_OBJC_ARC = YES;
+CLANG_ENABLE_OBJC_WEAK = YES;
+CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+CLANG_WARN_BOOL_CONVERSION = YES;
+CLANG_WARN_COMMA = YES;
+CLANG_WARN_CONSTANT_CONVERSION = YES;
+CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+CLANG_WARN_EMPTY_BODY = YES;
+CLANG_WARN_ENUM_CONVERSION = YES;
+CLANG_WARN_INFINITE_RECURSION = YES;
+CLANG_WARN_INT_CONVERSION = YES;
+CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+CLANG_WARN_STRICT_PROTOTYPES = YES;
+CLANG_WARN_SUSPICIOUS_MOVE = YES;
+CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+CODE_SIGN_STYLE = Automatic;
+COPY_PHASE_STRIP = NO;
+DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+ENABLE_NS_ASSERTIONS = NO;
+ENABLE_STRICT_OBJC_MSGSEND = YES;
+GCC_C_LANGUAGE_STANDARD = gnu11;
+GCC_NO_COMMON_BLOCKS = YES;
+GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+GCC_WARN_UNDECLARED_SELECTOR = YES;
+GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+GCC_WARN_UNUSED_FUNCTION = YES;
+GCC_WARN_UNUSED_VARIABLE = YES;
+IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+MTL_ENABLE_DEBUG_INFO = NO;
+SDKROOT = iphoneos;
+SWIFT_COMPILATION_MODE = wholemodule;
+SWIFT_OPTIMIZATION_LEVEL = "-O";
+TARGETED_DEVICE_FAMILY = "1";
+}; name = Release; };
+3E1D4A492B0E45B1008B9A22 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+CODE_SIGN_STYLE = Automatic;
+DEVELOPMENT_TEAM = "";
+INFOPLIST_FILE = FplNotifier/Info.plist;
+IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+LD_RUNPATH_SEARCH_PATHS = (
+"$(inherited)",
+"@executable_path/Frameworks",
+);
+PRODUCT_BUNDLE_IDENTIFIER = com.example.FplNotifier;
+PRODUCT_NAME = "$(TARGET_NAME)";
+SWIFT_EMIT_LOC_STRINGS = YES;
+SWIFT_VERSION = 5.0;
+TARGETED_DEVICE_FAMILY = 1;
+}; name = Debug; };
+3E1D4A4A2B0E45B1008B9A22 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+CODE_SIGN_STYLE = Automatic;
+DEVELOPMENT_TEAM = "";
+INFOPLIST_FILE = FplNotifier/Info.plist;
+IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+LD_RUNPATH_SEARCH_PATHS = (
+"$(inherited)",
+"@executable_path/Frameworks",
+);
+PRODUCT_BUNDLE_IDENTIFIER = com.example.FplNotifier;
+PRODUCT_NAME = "$(TARGET_NAME)";
+SWIFT_EMIT_LOC_STRINGS = YES;
+SWIFT_VERSION = 5.0;
+TARGETED_DEVICE_FAMILY = 1;
+}; name = Release; };
+3E1D4A4B2B0E45B1008B9A22 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+CODE_SIGN_STYLE = Automatic;
+DEVELOPMENT_TEAM = "";
+INFOPLIST_FILE = Tests/FplNotifierTests/Info.plist;
+IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+LD_RUNPATH_SEARCH_PATHS = (
+"$(inherited)",
+"@executable_path/Frameworks",
+);
+PRODUCT_BUNDLE_IDENTIFIER = com.example.FplNotifierTests;
+PRODUCT_NAME = "$(TARGET_NAME)";
+SWIFT_EMIT_LOC_STRINGS = NO;
+SWIFT_VERSION = 5.0;
+TARGETED_DEVICE_FAMILY = 1;
+}; name = Debug; };
+3E1D4A4C2B0E45B1008B9A22 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+CODE_SIGN_STYLE = Automatic;
+DEVELOPMENT_TEAM = "";
+INFOPLIST_FILE = Tests/FplNotifierTests/Info.plist;
+IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+LD_RUNPATH_SEARCH_PATHS = (
+"$(inherited)",
+"@executable_path/Frameworks",
+);
+PRODUCT_BUNDLE_IDENTIFIER = com.example.FplNotifierTests;
+PRODUCT_NAME = "$(TARGET_NAME)";
+SWIFT_EMIT_LOC_STRINGS = NO;
+SWIFT_VERSION = 5.0;
+TARGETED_DEVICE_FAMILY = 1;
+}; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+3E1D4A462B0E45B1008B9A22 /* Build configuration list for PBXProject "FplNotifier" */ = {isa = XCConfigurationList; buildConfigurations = (
+3E1D4A422B0E45B1008B9A22 /* Debug */,
+3E1D4A432B0E45B1008B9A22 /* Release */,
+); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+3E1D4A472B0E45B1008B9A22 /* Build configuration list for PBXNativeTarget "FplNotifier" */ = {isa = XCConfigurationList; buildConfigurations = (
+3E1D4A492B0E45B1008B9A22 /* Debug */,
+3E1D4A4A2B0E45B1008B9A22 /* Release */,
+); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+3E1D4A482B0E45B1008B9A22 /* Build configuration list for PBXNativeTarget "FplNotifierTests" */ = {isa = XCConfigurationList; buildConfigurations = (
+3E1D4A4B2B0E45B1008B9A22 /* Debug */,
+3E1D4A4C2B0E45B1008B9A22 /* Release */,
+); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+
+};
+rootObject = 3E1D4A302B0E45A0008B9A22 /* Project object */;
+}
