@@ -1,0 +1,29 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "name": "Gameweek 1",
+      "deadline_time": "2024-08-10T10:30:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Gameweek 2",
+      "deadline_time": "2024-08-17T10:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Gameweek 3",
+      "deadline_time": "2024-08-24T10:30:00+00:00"
+    },
+    {
+      "id": 4,
+      "name": "Invalid past",
+      "deadline_time": "2023-08-10T10:30:00Z"
+    },
+    {
+      "id": -5,
+      "name": "Negative",
+      "deadline_time": "2024-08-10T10:30:00Z"
+    }
+  ]
+}
