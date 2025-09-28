@@ -1,5 +1,6 @@
 package com.example.fplnotifier
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -24,9 +25,10 @@ object NotificationHelper {
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 context.getString(R.string.app_name),
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             )
             channel.description = "Upcoming Fantasy Premier League deadlines"
+            channel.enableVibration(true)
             manager.createNotificationChannel(channel)
         }
     }
@@ -60,6 +62,8 @@ object NotificationHelper {
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setDefaults(Notification.DEFAULT_ALL)
             .build()
 
         NotificationManagerCompat.from(context).notify(gameweek.eventId, notification)
