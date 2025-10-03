@@ -24,7 +24,12 @@ private val KEY_LAST_NOTIFICATION = stringPreferencesKey("last_notification")
 class ReminderRepository(private val context: Context) {
     private val dataStore = context.reminderDataStore
 
-    data class SentReminder(val eventId: Int, val deadline: Instant)
+    enum class ReminderType {
+        STANDARD,
+        DRAFT,
+    }
+
+    data class SentReminder(val eventId: Int, val deadline: Instant, val type: ReminderType)
 
     val lastNotification: Flow<String?> = dataStore.data.map { prefs ->
         prefs[KEY_LAST_NOTIFICATION]
@@ -45,7 +50,9 @@ class ReminderRepository(private val context: Context) {
             } catch (ex: Exception) {
                 continue
             }
-            reminders += SentReminder(eventId, deadline)
+            val typeValue = obj.optString("type", ReminderType.STANDARD.name)
+            val type = runCatching { ReminderType.valueOf(typeValue) }.getOrDefault(ReminderType.STANDARD)
+            reminders += SentReminder(eventId, deadline, type)
         }
         return reminders
     }
@@ -56,6 +63,7 @@ class ReminderRepository(private val context: Context) {
             val obj = JSONObject()
             obj.put("eventId", reminder.eventId)
             obj.put("deadline", reminder.deadline.toString())
+            obj.put("type", reminder.type.name)
             array.put(obj)
         }
         dataStore.edit { prefs ->
@@ -67,15 +75,29 @@ class ReminderRepository(private val context: Context) {
         }
     }
 
-    suspend fun recordNotification(gameweek: GameweekDeadline, zoneId: ZoneId) {
+    suspend fun recordNotification(
+        gameweek: GameweekDeadline,
+        zoneId: ZoneId,
+        type: ReminderType,
+    ) {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm z")
-        val message = buildString {
-            append("Sent reminder for ")
-            append(gameweek.name)
-            append(" (GW ")
-            append(gameweek.eventId)
-            append(") at ")
-            append(gameweek.deadlineIn(zoneId).format(formatter))
+        val message = when (type) {
+            ReminderType.STANDARD -> context.getString(
+                R.string.last_notification_standard,
+                gameweek.name,
+                gameweek.eventId,
+                gameweek.deadlineIn(zoneId).format(formatter),
+            )
+            ReminderType.DRAFT -> {
+                val draftLock = gameweek.deadline.minus(Duration.ofHours(24)).atZone(zoneId)
+                context.getString(
+                    R.string.last_notification_draft,
+                    gameweek.name,
+                    gameweek.eventId,
+                    draftLock.format(formatter),
+                    gameweek.deadlineIn(zoneId).format(formatter),
+                )
+            }
         }
         dataStore.edit { prefs ->
             prefs[KEY_LAST_NOTIFICATION] = message

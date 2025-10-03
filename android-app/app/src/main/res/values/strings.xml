@@ -4,9 +4,14 @@
     <string name="poll_minutes_label">Polling interval (minutes)</string>
     <string name="timezone_label">Timezone</string>
     <string name="enable_reminders">Enable reminders</string>
+    <string name="enable_draft_reminders">Enable draft deadline reminders</string>
     <string name="status_heading">Status</string>
     <string name="last_notification_none">No reminders sent yet.</string>
     <string name="save_changes">Settings are saved automatically.</string>
     <string name="notifications_disabled">Background reminders are disabled.</string>
-    <string name="notifications_enabled">Background reminders are enabled.</string>
+    <string name="notifications_enabled_types">Background reminders enabled: %1$s.</string>
+    <string name="status_type_standard">standard</string>
+    <string name="status_type_draft">draft</string>
+    <string name="last_notification_standard">Sent standard reminder for %1$s (GW %2$d) at %3$s.</string>
+    <string name="last_notification_draft">Sent draft reminder for %1$s (GW %2$d); draft window closed at %3$s (final deadline %4$s).</string>
 </resources>
