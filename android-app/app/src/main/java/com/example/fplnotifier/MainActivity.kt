@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val zoneIds: List<String> by lazy { ZoneId.getAvailableZoneIds().sorted() }
-    private var suppressToggleListener = false
+    private var suppressStandardToggleListener = false
+    private var suppressDraftToggleListener = false
+    private var pendingEnableStandard = false
+    private var pendingEnableDraft = false
 
     private val viewModel: MainViewModel by viewModels {
         MainViewModelFactory(
@@ -57,9 +60,14 @@ class MainActivity : AppCompatActivity() {
                         binding.inputTimezone.setText(state.timezone, false)
                     }
                     if (binding.toggleReminders.isChecked != state.notificationsEnabled) {
-                        suppressToggleListener = true
+                        suppressStandardToggleListener = true
                         binding.toggleReminders.isChecked = state.notificationsEnabled
-                        suppressToggleListener = false
+                        suppressStandardToggleListener = false
+                    }
+                    if (binding.toggleDraftReminders.isChecked != state.draftNotificationsEnabled) {
+                        suppressDraftToggleListener = true
+                        binding.toggleDraftReminders.isChecked = state.draftNotificationsEnabled
+                        suppressDraftToggleListener = false
                     }
                     binding.textStatus.text = state.statusText
                     binding.textLastNotification.text = state.lastNotification
@@ -91,15 +99,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.toggleReminders.setOnCheckedChangeListener { _, isChecked ->
-            if (suppressToggleListener) return@setOnCheckedChangeListener
+            if (suppressStandardToggleListener) return@setOnCheckedChangeListener
             if (isChecked && !hasNotificationPermission()) {
-                suppressToggleListener = true
+                pendingEnableStandard = true
+                suppressStandardToggleListener = true
                 binding.toggleReminders.isChecked = false
-                suppressToggleListener = false
+                suppressStandardToggleListener = false
                 requestNotificationPermission()
                 return@setOnCheckedChangeListener
             }
             viewModel.onNotificationsToggled(isChecked)
+        }
+        binding.toggleDraftReminders.setOnCheckedChangeListener { _, isChecked ->
+            if (suppressDraftToggleListener) return@setOnCheckedChangeListener
+            if (isChecked && !hasNotificationPermission()) {
+                pendingEnableDraft = true
+                suppressDraftToggleListener = true
+                binding.toggleDraftReminders.isChecked = false
+                suppressDraftToggleListener = false
+                requestNotificationPermission()
+                return@setOnCheckedChangeListener
+            }
+            viewModel.onDraftNotificationsToggled(isChecked)
         }
     }
 
@@ -133,7 +154,23 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_NOTIFICATIONS) {
             val granted = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             if (granted) {
-                viewModel.onNotificationsToggled(true)
+                if (pendingEnableStandard) {
+                    pendingEnableStandard = false
+                    suppressStandardToggleListener = true
+                    binding.toggleReminders.isChecked = true
+                    suppressStandardToggleListener = false
+                    viewModel.onNotificationsToggled(true)
+                }
+                if (pendingEnableDraft) {
+                    pendingEnableDraft = false
+                    suppressDraftToggleListener = true
+                    binding.toggleDraftReminders.isChecked = true
+                    suppressDraftToggleListener = false
+                    viewModel.onDraftNotificationsToggled(true)
+                }
+            } else {
+                pendingEnableStandard = false
+                pendingEnableDraft = false
             }
         }
     }

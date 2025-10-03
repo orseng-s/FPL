@@ -20,7 +20,7 @@ class DeadlineWorker(
 
     override suspend fun doWork(): Result {
         val settings = settingsRepository.settings.first()
-        if (!settings.notificationsEnabled) {
+        if (!settings.notificationsEnabled && !settings.draftNotificationsEnabled) {
             reminderRepository.clearLastNotification()
             DeadlineScheduler.cancel(applicationContext)
             return Result.success()
@@ -29,6 +29,7 @@ class DeadlineWorker(
         val now = Instant.now()
         val pollDuration = Duration.ofMinutes(settings.pollMinutes)
         val leadDuration = Duration.ofMillis((settings.leadHours * 3600_000).roundToLong())
+        val draftLeadDuration = Duration.ofHours(24)
         val zoneId = runCatching { ZoneId.of(settings.timezoneId) }.getOrDefault(ZoneId.systemDefault())
 
         val sent = reminderRepository.getSentReminders()
@@ -45,25 +46,74 @@ class DeadlineWorker(
         val upcoming = deadlines.firstOrNull()
         var nextDelay = pollDuration
 
-        if (upcoming == null) {
-            reminderRepository.saveSentReminders(cache)
-        } else {
-            val alreadySent = cache.any { it.eventId == upcoming.eventId }
-            val notifyAt = upcoming.deadline.minus(leadDuration)
-            if (!notifyAt.isAfter(now)) {
-                if (!alreadySent) {
-                    NotificationHelper.sendNotification(applicationContext, upcoming, leadDuration, zoneId)
-                    cache = cache + ReminderRepository.SentReminder(upcoming.eventId, upcoming.deadline)
-                    reminderRepository.recordNotification(upcoming, zoneId)
+        if (upcoming != null) {
+            data class ReminderCandidate(
+                val type: ReminderRepository.ReminderType,
+                val notifyAt: Instant,
+            )
+
+            val candidates = mutableListOf<ReminderCandidate>()
+            if (settings.notificationsEnabled) {
+                candidates += ReminderCandidate(
+                    ReminderRepository.ReminderType.STANDARD,
+                    upcoming.deadline.minus(leadDuration)
+                )
+            }
+            if (settings.draftNotificationsEnabled) {
+                candidates += ReminderCandidate(
+                    ReminderRepository.ReminderType.DRAFT,
+                    upcoming.deadline.minus(draftLeadDuration)
+                )
+            }
+
+            fun isSent(type: ReminderRepository.ReminderType): Boolean {
+                return cache.any { it.eventId == upcoming.eventId && it.type == type }
+            }
+
+            val dueCandidate = candidates
+                .filter { !isSent(it.type) && !it.notifyAt.isAfter(now) }
+                .minByOrNull { it.notifyAt }
+
+            if (dueCandidate != null) {
+                when (dueCandidate.type) {
+                    ReminderRepository.ReminderType.STANDARD -> {
+                        NotificationHelper.sendNotification(applicationContext, upcoming, leadDuration, zoneId)
+                    }
+                    ReminderRepository.ReminderType.DRAFT -> {
+                        NotificationHelper.sendDraftNotification(applicationContext, upcoming, zoneId)
+                    }
                 }
-                nextDelay = pollDuration
-                reminderRepository.saveSentReminders(cache)
-            } else {
-                val waitSeconds = Duration.between(now, notifyAt)
-                nextDelay = if (waitSeconds > pollDuration) pollDuration else waitSeconds
-                reminderRepository.saveSentReminders(cache)
+                cache = cache + ReminderRepository.SentReminder(
+                    upcoming.eventId,
+                    upcoming.deadline,
+                    dueCandidate.type
+                )
+                reminderRepository.recordNotification(upcoming, zoneId, dueCandidate.type)
+            }
+
+            val remainingCandidates = candidates.filterNot { candidate ->
+                cache.any { it.eventId == upcoming.eventId && it.type == candidate.type }
+            }
+
+            if (remainingCandidates.isNotEmpty()) {
+                val additionalDue = remainingCandidates.any { !it.notifyAt.isAfter(now) }
+                nextDelay = if (additionalDue) {
+                    Duration.ZERO
+                } else {
+                    val soonest = remainingCandidates
+                        .map { Duration.between(now, it.notifyAt) }
+                        .map { if (it.isNegative) Duration.ZERO else it }
+                        .minOrNull()
+                    when {
+                        soonest == null -> pollDuration
+                        soonest > pollDuration -> pollDuration
+                        else -> soonest
+                    }
+                }
             }
         }
+
+        reminderRepository.saveSentReminders(cache)
 
         DeadlineScheduler.schedule(applicationContext, nextDelay)
         return Result.success()

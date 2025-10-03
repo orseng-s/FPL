@@ -61,6 +61,13 @@
             android:layout_marginBottom="24dp"
             android:text="@string/enable_reminders" />
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/toggleDraftReminders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/enable_draft_reminders" />
+
         <TextView
             android:id="@+id/textStatus"
             android:layout_width="match_parent"

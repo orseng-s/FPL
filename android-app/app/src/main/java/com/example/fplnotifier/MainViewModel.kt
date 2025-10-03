@@ -16,6 +16,7 @@ data class UiState(
     val pollMinutes: String = "360",
     val timezone: String = java.time.ZoneId.systemDefault().id,
     val notificationsEnabled: Boolean = false,
+    val draftNotificationsEnabled: Boolean = false,
     val statusText: String = "",
     val lastNotification: String? = null,
 )
@@ -34,16 +35,28 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             combine(settingsRepository.settings, reminderRepository.lastNotification) { settings, last ->
-                val status = if (settings.notificationsEnabled) {
-                    application.getString(R.string.notifications_enabled)
-                } else {
+                val enabledTypes = mutableListOf<String>().apply {
+                    if (settings.notificationsEnabled) {
+                        add(application.getString(R.string.status_type_standard))
+                    }
+                    if (settings.draftNotificationsEnabled) {
+                        add(application.getString(R.string.status_type_draft))
+                    }
+                }
+                val status = if (enabledTypes.isEmpty()) {
                     application.getString(R.string.notifications_disabled)
+                } else {
+                    application.getString(
+                        R.string.notifications_enabled_types,
+                        enabledTypes.joinToString(", ")
+                    )
                 }
                 UiState(
                     leadHours = decimalFormat.format(settings.leadHours),
                     pollMinutes = settings.pollMinutes.toString(),
                     timezone = settings.timezoneId,
                     notificationsEnabled = settings.notificationsEnabled,
+                    draftNotificationsEnabled = settings.draftNotificationsEnabled,
                     statusText = status,
                     lastNotification = last,
                 )
@@ -77,7 +90,18 @@ class MainViewModel(
     fun onNotificationsToggled(enabled: Boolean) {
         viewModelScope.launch {
             settingsRepository.setNotificationsEnabled(enabled)
-            if (enabled) {
+            if (enabled || _state.value.draftNotificationsEnabled) {
+                DeadlineScheduler.schedule(getApplication(), Duration.ZERO)
+            } else {
+                DeadlineScheduler.cancel(getApplication())
+            }
+        }
+    }
+
+    fun onDraftNotificationsToggled(enabled: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setDraftNotificationsEnabled(enabled)
+            if (enabled || _state.value.notificationsEnabled) {
                 DeadlineScheduler.schedule(getApplication(), Duration.ZERO)
             } else {
                 DeadlineScheduler.cancel(getApplication())
@@ -86,7 +110,7 @@ class MainViewModel(
     }
 
     private suspend fun restartIfNeeded() {
-        if (_state.value.notificationsEnabled) {
+        if (_state.value.notificationsEnabled || _state.value.draftNotificationsEnabled) {
             DeadlineScheduler.schedule(getApplication(), Duration.ZERO)
         }
     }

@@ -19,12 +19,14 @@ private val KEY_LEAD_HOURS = doublePreferencesKey("lead_hours")
 private val KEY_POLL_MINUTES = longPreferencesKey("poll_minutes")
 private val KEY_TIMEZONE = stringPreferencesKey("timezone")
 private val KEY_NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
+private val KEY_DRAFT_NOTIFICATIONS_ENABLED = booleanPreferencesKey("draft_notifications_enabled")
 
 data class UserSettings(
     val leadHours: Double,
     val pollMinutes: Long,
     val timezoneId: String,
     val notificationsEnabled: Boolean,
+    val draftNotificationsEnabled: Boolean,
 )
 
 class SettingsRepository(private val context: Context) {
@@ -37,6 +39,7 @@ class SettingsRepository(private val context: Context) {
             pollMinutes = prefs[KEY_POLL_MINUTES] ?: 360,
             timezoneId = prefs[KEY_TIMEZONE] ?: defaultTz,
             notificationsEnabled = prefs[KEY_NOTIFICATIONS_ENABLED] ?: false,
+            draftNotificationsEnabled = prefs[KEY_DRAFT_NOTIFICATIONS_ENABLED] ?: false,
         )
     }
 
@@ -61,6 +64,12 @@ class SettingsRepository(private val context: Context) {
     suspend fun setNotificationsEnabled(enabled: Boolean) {
         dataStore.edit { prefs ->
             prefs[KEY_NOTIFICATIONS_ENABLED] = enabled
+        }
+    }
+
+    suspend fun setDraftNotificationsEnabled(enabled: Boolean) {
+        dataStore.edit { prefs ->
+            prefs[KEY_DRAFT_NOTIFICATIONS_ENABLED] = enabled
         }
     }
 }
