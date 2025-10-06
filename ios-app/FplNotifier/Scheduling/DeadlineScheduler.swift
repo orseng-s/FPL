@@ -5,6 +5,7 @@ final class DeadlineScheduler: ObservableObject {
     struct PlannedNotification: Equatable {
         let notifyAt: Date
         let gameweek: GameweekDeadline
+        let type: ReminderStore.SentReminder.ReminderType
     }
 
     @Published private(set) var plannedNotification: PlannedNotification?
@@ -29,7 +30,8 @@ final class DeadlineScheduler: ObservableObject {
     }
 
     func ensureRunningIfNeeded() {
-        if settingsStore.userSettings.notificationsEnabled {
+        let settings = settingsStore.userSettings
+        if settings.notificationsEnabled || settings.draftNotificationsEnabled {
             start()
         } else {
             cancel()
@@ -74,7 +76,7 @@ final class DeadlineScheduler: ObservableObject {
 
     private func runCycle() async -> TimeInterval? {
         let settings = settingsStore.userSettings
-        if !settings.notificationsEnabled {
+        if !settings.notificationsEnabled && !settings.draftNotificationsEnabled {
             reminderStore.clearLastNotification()
             plannedNotification = nil
             return nil
@@ -83,6 +85,7 @@ final class DeadlineScheduler: ObservableObject {
         let now = dateProvider()
         let pollInterval = max(TimeInterval(settings.pollMinutes * 60), 60)
         let leadInterval = max(settings.leadHours, 0.1) * 3600
+        let draftInterval: TimeInterval = 24 * 3600
         let timezone = TimeZone(identifier: settings.timezoneId) ?? .current
 
         var sent = reminderStore.sentReminders
@@ -91,27 +94,86 @@ final class DeadlineScheduler: ObservableObject {
         do {
             let deadlines = try await apiRepository.getUpcomingDeadlines(now: now)
             reminderStore.saveSentReminders(sent)
-            guard let upcoming = deadlines.first else {
-                plannedNotification = nil
-                return pollInterval
+            struct Candidate {
+                let notifyAt: Date
+                let gameweek: GameweekDeadline
+                let type: ReminderStore.SentReminder.ReminderType
+                let leadTime: TimeInterval
             }
-            let notifyAt = upcoming.deadline.addingTimeInterval(-leadInterval)
-            let alreadySent = sent.contains { $0.eventId == upcoming.eventId }
-            if notifyAt <= now {
-                plannedNotification = nil
-                if !alreadySent {
-                    await NotificationHelper.sendNotification(for: upcoming, leadTime: leadInterval, timezone: timezone)
-                    sent.append(ReminderStore.SentReminder(eventId: upcoming.eventId, deadline: upcoming.deadline))
-                    reminderStore.saveSentReminders(sent)
-                    reminderStore.recordNotification(for: upcoming, timezone: timezone)
+
+            let candidates: [Candidate] = deadlines.flatMap { gameweek -> [Candidate] in
+                var results: [Candidate] = []
+                if settings.notificationsEnabled {
+                    results.append(
+                        Candidate(
+                            notifyAt: gameweek.deadline.addingTimeInterval(-leadInterval),
+                            gameweek: gameweek,
+                            type: .standard,
+                            leadTime: leadInterval
+                        )
+                    )
                 }
-                return pollInterval
-            } else {
-                plannedNotification = PlannedNotification(notifyAt: notifyAt, gameweek: upcoming)
-                reminderStore.saveSentReminders(sent)
-                let wait = min(pollInterval, notifyAt.timeIntervalSince(now))
-                return max(wait, 1)
+                if settings.draftNotificationsEnabled {
+                    results.append(
+                        Candidate(
+                            notifyAt: gameweek.deadline.addingTimeInterval(-draftInterval),
+                            gameweek: gameweek,
+                            type: .draft,
+                            leadTime: draftInterval
+                        )
+                    )
+                }
+                return results
+            }.sorted { lhs, rhs in
+                lhs.notifyAt < rhs.notifyAt
             }
+
+            guard !candidates.isEmpty else {
+                plannedNotification = nil
+                reminderStore.saveSentReminders(sent)
+                return pollInterval
+            }
+
+            for candidate in candidates {
+                let alreadySent = sent.contains { reminder in
+                    reminder.eventId == candidate.gameweek.eventId && reminder.type == candidate.type
+                }
+                if candidate.notifyAt <= now {
+                    if !alreadySent {
+                        plannedNotification = nil
+                        await NotificationHelper.sendNotification(
+                            for: candidate.gameweek,
+                            leadTime: candidate.leadTime,
+                            type: candidate.type,
+                            timezone: timezone
+                        )
+                        sent.append(
+                            ReminderStore.SentReminder(
+                                eventId: candidate.gameweek.eventId,
+                                deadline: candidate.gameweek.deadline,
+                                type: candidate.type
+                            )
+                        )
+                        reminderStore.saveSentReminders(sent)
+                        reminderStore.recordNotification(for: candidate.gameweek, type: candidate.type, timezone: timezone)
+                        return 0
+                    }
+                    continue
+                } else if !alreadySent {
+                    plannedNotification = PlannedNotification(
+                        notifyAt: candidate.notifyAt,
+                        gameweek: candidate.gameweek,
+                        type: candidate.type
+                    )
+                    reminderStore.saveSentReminders(sent)
+                    let wait = min(pollInterval, candidate.notifyAt.timeIntervalSince(now))
+                    return max(wait, 1)
+                }
+            }
+
+            plannedNotification = nil
+            reminderStore.saveSentReminders(sent)
+            return pollInterval
         } catch {
             reminderStore.saveSentReminders(sent)
             return pollInterval

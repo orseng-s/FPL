@@ -11,6 +11,10 @@ struct ContentView: View {
                         get: { viewModel.state.notificationsEnabled },
                         set: { viewModel.onNotificationsToggled($0) }
                     ))
+                    Toggle("Enable draft reminder", isOn: Binding(
+                        get: { viewModel.state.draftNotificationsEnabled },
+                        set: { viewModel.onDraftNotificationsToggled($0) }
+                    ))
                     Stepper(value: Binding(
                         get: { viewModel.state.leadHours },
                         set: { viewModel.onLeadHoursChanged($0) }
