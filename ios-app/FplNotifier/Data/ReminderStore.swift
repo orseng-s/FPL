@@ -3,8 +3,40 @@ import Foundation
 @MainActor
 final class ReminderStore: ObservableObject {
     struct SentReminder: Codable, Equatable {
+        enum ReminderType: String, Codable {
+            case standard
+            case draft
+        }
+
         let eventId: Int
         let deadline: Date
+        let type: ReminderType
+
+        init(eventId: Int, deadline: Date, type: ReminderType) {
+            self.eventId = eventId
+            self.deadline = deadline
+            self.type = type
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case eventId
+            case deadline
+            case type
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            eventId = try container.decode(Int.self, forKey: .eventId)
+            deadline = try container.decode(Date.self, forKey: .deadline)
+            type = try container.decodeIfPresent(ReminderType.self, forKey: .type) ?? .standard
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(eventId, forKey: .eventId)
+            try container.encode(deadline, forKey: .deadline)
+            try container.encode(type, forKey: .type)
+        }
     }
 
     @Published private(set) var lastNotification: String?
@@ -47,8 +79,15 @@ final class ReminderStore: ObservableObject {
         }
     }
 
-    func recordNotification(for gameweek: GameweekDeadline, timezone: TimeZone) {
-        let message = "Sent reminder for \(gameweek.name) (GW \(gameweek.eventId)) at \(DeadlineFormatter.format(gameweek, in: timezone))"
+    func recordNotification(for gameweek: GameweekDeadline, type: SentReminder.ReminderType, timezone: TimeZone) {
+        let prefix: String
+        switch type {
+        case .standard:
+            prefix = "Sent reminder"
+        case .draft:
+            prefix = "Sent draft reminder"
+        }
+        let message = "\(prefix) for \(gameweek.name) (GW \(gameweek.eventId)) at \(DeadlineFormatter.format(gameweek, in: timezone))"
         lastNotification = message
         defaults.set(message, forKey: lastKey)
     }

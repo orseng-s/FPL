@@ -7,6 +7,7 @@ final class SettingsStore: ObservableObject {
         var pollMinutes: Int
         var timezoneId: String
         var notificationsEnabled: Bool
+        var draftNotificationsEnabled: Bool = false
     }
 
     @Published private(set) var userSettings: UserSettings
@@ -26,7 +27,8 @@ final class SettingsStore: ObservableObject {
                 leadHours: 2.0,
                 pollMinutes: 360,
                 timezoneId: TimeZone.current.identifier,
-                notificationsEnabled: false
+                notificationsEnabled: false,
+                draftNotificationsEnabled: false
             )
             self.userSettings = fallback
         }
@@ -55,6 +57,12 @@ final class SettingsStore: ObservableObject {
     func setNotificationsEnabled(_ enabled: Bool) {
         guard userSettings.notificationsEnabled != enabled else { return }
         userSettings.notificationsEnabled = enabled
+        persist()
+    }
+
+    func setDraftNotificationsEnabled(_ enabled: Bool) {
+        guard userSettings.draftNotificationsEnabled != enabled else { return }
+        userSettings.draftNotificationsEnabled = enabled
         persist()
     }
 

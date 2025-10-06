@@ -35,17 +35,28 @@ enum NotificationHelper {
     static func sendNotification(
         for gameweek: GameweekDeadline,
         leadTime: TimeInterval,
+        type: ReminderStore.SentReminder.ReminderType,
         timezone: TimeZone,
         center: UNUserNotificationCenter = .current()
     ) async {
         let content = UNMutableNotificationContent()
-        let leadDescription = formatLeadTime(leadTime)
-        content.title = "FPL deadline in \(leadDescription)"
-        content.body = "\(gameweek.name) (GW \(gameweek.eventId)) deadline at \(DeadlineFormatter.format(gameweek, in: timezone))"
+        let identifier: String
+        switch type {
+        case .standard:
+            let leadDescription = formatLeadTime(leadTime)
+            content.title = "FPL deadline in \(leadDescription)"
+            content.body = "\(gameweek.name) (GW \(gameweek.eventId)) deadline at \(DeadlineFormatter.format(gameweek, in: timezone))"
+            identifier = "fpl_deadline_\(gameweek.eventId)"
+        case .draft:
+            let leadDescription = formatLeadTime(leadTime)
+            content.title = "Draft reminder: FPL deadline in \(leadDescription)"
+            content.body = "Set your draft squad before \(gameweek.name) (GW \(gameweek.eventId)) deadline at \(DeadlineFormatter.format(gameweek, in: timezone))"
+            identifier = "fpl_deadline_draft_\(gameweek.eventId)"
+        }
         content.sound = .default
 
         let request = UNNotificationRequest(
-            identifier: "fpl_deadline_\(gameweek.eventId)",
+            identifier: identifier,
             content: content,
             trigger: nil
         )

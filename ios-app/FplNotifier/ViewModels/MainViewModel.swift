@@ -9,6 +9,7 @@ final class MainViewModel: ObservableObject {
         var pollMinutes: Int
         var timezoneId: String
         var notificationsEnabled: Bool
+        var draftNotificationsEnabled: Bool
         var statusText: String
         var nextNotificationText: String?
         var lastNotification: String?
@@ -29,12 +30,13 @@ final class MainViewModel: ObservableObject {
         self.reminderStore = reminderStore
         self.scheduler = scheduler
         let settings = settingsStore.userSettings
-        let status = MainViewModel.statusText(enabled: settings.notificationsEnabled)
+        let status = MainViewModel.statusText(for: settings)
         self.state = UiState(
             leadHours: settings.leadHours,
             pollMinutes: settings.pollMinutes,
             timezoneId: settings.timezoneId,
             notificationsEnabled: settings.notificationsEnabled,
+            draftNotificationsEnabled: settings.draftNotificationsEnabled,
             statusText: status,
             nextNotificationText: nil,
             lastNotification: reminderStore.lastNotification
@@ -63,21 +65,21 @@ final class MainViewModel: ObservableObject {
 
     func onLeadHoursChanged(_ value: Double) {
         settingsStore.updateLeadHours(value)
-        if settingsStore.userSettings.notificationsEnabled {
+        if hasActiveNotifications {
             scheduler.restart()
         }
     }
 
     func onPollMinutesChanged(_ value: Int) {
         settingsStore.updatePollMinutes(value)
-        if settingsStore.userSettings.notificationsEnabled {
+        if hasActiveNotifications {
             scheduler.restart()
         }
     }
 
     func onTimezoneChanged(_ identifier: String) {
         settingsStore.updateTimezone(identifier)
-        if settingsStore.userSettings.notificationsEnabled {
+        if hasActiveNotifications {
             scheduler.restart()
         }
     }
@@ -96,8 +98,35 @@ final class MainViewModel: ObservableObject {
             }
         } else {
             settingsStore.setNotificationsEnabled(false)
-            scheduler.cancel()
-            reminderStore.clearLastNotification()
+            if hasActiveNotifications {
+                scheduler.restart()
+            } else {
+                scheduler.cancel()
+                reminderStore.clearLastNotification()
+            }
+        }
+    }
+
+    func onDraftNotificationsToggled(_ enabled: Bool) {
+        if enabled {
+            Task { [weak self] in
+                guard let self = self else { return }
+                let granted = await self.scheduler.requestAuthorizationIfNeeded()
+                if granted {
+                    self.settingsStore.setDraftNotificationsEnabled(true)
+                    self.scheduler.restart()
+                } else {
+                    self.settingsStore.setDraftNotificationsEnabled(false)
+                }
+            }
+        } else {
+            settingsStore.setDraftNotificationsEnabled(false)
+            if hasActiveNotifications {
+                scheduler.restart()
+            } else {
+                scheduler.cancel()
+                reminderStore.clearLastNotification()
+            }
         }
     }
 
@@ -110,7 +139,8 @@ final class MainViewModel: ObservableObject {
                 self.state.pollMinutes = settings.pollMinutes
                 self.state.timezoneId = settings.timezoneId
                 self.state.notificationsEnabled = settings.notificationsEnabled
-                self.state.statusText = MainViewModel.statusText(enabled: settings.notificationsEnabled)
+                self.state.draftNotificationsEnabled = settings.draftNotificationsEnabled
+                self.state.statusText = MainViewModel.statusText(for: settings)
                 self.updateNextNotificationText()
             }
             .store(in: &cancellables)
@@ -139,10 +169,35 @@ final class MainViewModel: ObservableObject {
         }
         let timezone = TimeZone(identifier: state.timezoneId) ?? .current
         let formatted = DeadlineFormatter.string(from: planned.notifyAt, timeZone: timezone)
-        state.nextNotificationText = "Reminder for \(planned.gameweek.name) (GW \(planned.gameweek.eventId)) at \(formatted)"
+        let typePrefix: String
+        switch planned.type {
+        case .standard:
+            typePrefix = "Reminder"
+        case .draft:
+            typePrefix = "Draft reminder"
+        }
+        state.nextNotificationText = "\(typePrefix) for \(planned.gameweek.name) (GW \(planned.gameweek.eventId)) at \(formatted)"
     }
 
-    private static func statusText(enabled: Bool) -> String {
-        enabled ? "Notifications enabled" : "Notifications disabled"
+    private var hasActiveNotifications: Bool {
+        let settings = settingsStore.userSettings
+        return settings.notificationsEnabled || settings.draftNotificationsEnabled
+    }
+
+    private static func statusText(for settings: SettingsStore.UserSettings) -> String {
+        var enabledTypes: [String] = []
+        if settings.notificationsEnabled {
+            enabledTypes.append("Standard")
+        }
+        if settings.draftNotificationsEnabled {
+            enabledTypes.append("Draft")
+        }
+        guard !enabledTypes.isEmpty else {
+            return "Notifications disabled"
+        }
+        if enabledTypes.count == 1, let type = enabledTypes.first {
+            return "Notifications enabled (\(type))"
+        }
+        return "Notifications enabled (\(enabledTypes.joined(separator: ", ")))"
     }
 }
