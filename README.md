@@ -117,3 +117,15 @@ To enable reminders on Android:
    permission.
 3. Keep the app installed; WorkManager will continue polling the public FPL API
    and trigger reminders at the configured lead time.
+
+## Exam Task Studio prototype
+
+This repository now includes a static web prototype under [`web/`](web/) for a high school mathematics exam task catalog. It demonstrates the core workflow for splitting exam PDFs into task-level records, tagging them with metadata, filtering by theme/course/part/difficulty, and selecting tasks for a printable study document.
+
+Run the prototype locally with:
+
+```bash
+python -m http.server 8000 --directory web
+```
+
+Then open <http://127.0.0.1:8000/> in a browser. The current catalog uses sample metadata in [`web/data/tasks.json`](web/data/tasks.json); production PDF assets can be added later by filling in reviewed `splitPdf` paths for each task record.

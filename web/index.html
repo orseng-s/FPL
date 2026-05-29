@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exam Task Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="topbar" aria-label="Primary navigation">
+        <a class="brand" href="#top">Exam Task Studio</a>
+        <a href="#catalog">Catalog</a>
+        <a href="#builder">Study document</a>
+      </nav>
+      <section id="top" class="hero-content">
+        <p class="eyebrow">High school mathematics exam practice</p>
+        <h1>Find, combine, and print exam tasks by theme.</h1>
+        <p class="hero-copy">
+          A searchable task bank for teachers and students who want focused practice sets from
+          previous exam PDFs. Filter by course, year, theme, part, and difficulty, then pick tasks
+          for a custom study document.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#catalog">Browse tasks</a>
+          <a class="button secondary" href="#builder">Build document</a>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="metrics" aria-label="Catalog summary">
+        <article>
+          <strong id="taskCount">0</strong>
+          <span>cataloged tasks</span>
+        </article>
+        <article>
+          <strong id="courseCount">0</strong>
+          <span>courses</span>
+        </article>
+        <article>
+          <strong id="themeCount">0</strong>
+          <span>themes</span>
+        </article>
+        <article>
+          <strong id="selectedCount">0</strong>
+          <span>selected</span>
+        </article>
+      </section>
+
+      <section id="catalog" class="panel catalog-panel">
+        <div class="section-heading">
+          <p class="eyebrow">Catalog</p>
+          <h2>Filter the exam archive</h2>
+          <p>
+            The sample data below is intentionally structured like the production catalog: one row
+            per task, with metadata that can be imported after the PDFs are split.
+          </p>
+        </div>
+
+        <form class="filters" aria-label="Task filters">
+          <label>
+            Search
+            <input id="searchInput" type="search" placeholder="geometry, vectors, R1..." />
+          </label>
+          <label>
+            Course
+            <select id="courseFilter">
+              <option value="all">All courses</option>
+            </select>
+          </label>
+          <label>
+            Theme
+            <select id="themeFilter">
+              <option value="all">All themes</option>
+            </select>
+          </label>
+          <label>
+            Part
+            <select id="partFilter">
+              <option value="all">All parts</option>
+            </select>
+          </label>
+          <label>
+            Difficulty
+            <select id="difficultyFilter">
+              <option value="all">All levels</option>
+            </select>
+          </label>
+        </form>
+
+        <div class="toolbar">
+          <p id="resultCount">Loading tasks…</p>
+          <button id="clearFilters" class="button ghost" type="button">Clear filters</button>
+        </div>
+
+        <div id="taskGrid" class="task-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="builder" class="panel builder-panel">
+        <div class="section-heading">
+          <p class="eyebrow">Study document</p>
+          <h2>Pick tasks and generate a handout</h2>
+          <p>
+            The print view groups selected tasks by course and theme, includes metadata, and leaves
+            room for a later PDF renderer to embed the split task files directly.
+          </p>
+        </div>
+        <div class="builder-layout">
+          <aside class="document-settings" aria-label="Document settings">
+            <label>
+              Document title
+              <input id="documentTitle" type="text" value="Geometry practice set" />
+            </label>
+            <label>
+              Student notes
+              <textarea id="documentNotes" rows="5">Show all reasoning. Mark whether each task is Part 1 or Part 2 before you begin.</textarea>
+            </label>
+            <div class="button-row">
+              <button id="printDocument" class="button primary" type="button">Print / save PDF</button>
+              <button id="copyManifest" class="button secondary" type="button">Copy manifest</button>
+            </div>
+            <p id="copyStatus" class="status" role="status"></p>
+          </aside>
+          <article id="documentPreview" class="document-preview" aria-live="polite"></article>
+        </div>
+      </section>
+    </main>
+
+    <template id="taskCardTemplate">
+      <article class="task-card">
+        <div class="card-topline">
+          <span class="pill course"></span>
+          <span class="pill part"></span>
+        </div>
+        <h3></h3>
+        <p class="summary"></p>
+        <dl class="metadata"></dl>
+        <button class="button select-task" type="button"></button>
+      </article>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
